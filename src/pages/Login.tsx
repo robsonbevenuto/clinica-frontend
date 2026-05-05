@@ -9,7 +9,7 @@ export default function Login() {
   const navigate = useNavigate()
 
   const handleLogin = () => {
-    if (email === 'admin@clinica.com' && senha === '123456') {
+    if (email === 'admin@clinica.com' && senha === '198904') {
       navigate('/home')
     } else {
       setErro('Email ou senha incorretos!')
