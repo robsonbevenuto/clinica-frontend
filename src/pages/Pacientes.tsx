@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useState, useEffect, useCallback } from 'react' // <-- Importamos o useCallback
 import { useNavigate } from 'react-router-dom'
 import { getPacientes, createPaciente, deletePaciente } from '../services/api'
 import { Paciente } from '../types'
@@ -12,12 +13,16 @@ export default function Pacientes() {
   const [email, setEmail] = useState('')
   const [telefone, setTelefone] = useState('')
 
-  useEffect(() => { carregarPacientes() }, [])
-
-  const carregarPacientes = async () => {
+  // 1. Movemos a função para CIMA e colocamos dentro do useCallback
+  const carregarPacientes = useCallback(async () => {
     const data = await getPacientes()
     setPacientes(data)
-  }
+  }, [])
+
+  // 2. O useEffect agora fica embaixo e avisa que depende do carregarPacientes
+  useEffect(() => {
+    carregarPacientes()
+  }, [carregarPacientes])
 
   const handleCriar = async () => {
     await createPaciente({ nome, cpf, email, telefone })
